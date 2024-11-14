@@ -1,0 +1,4 @@
+type: image
+builders:
+   - docker:
+      file: docker/Dockerfile

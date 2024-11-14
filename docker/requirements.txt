@@ -1,0 +1,5 @@
+cachetools==5.0.0
+PyYAML==6.0.1
+certifi==2023.7.22
+kubernetes==12.0.1
+jsonpath-ng==1.6.1

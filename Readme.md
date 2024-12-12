@@ -6,15 +6,15 @@ Topics covered in this section:
 
 # Overview
 
-Deployment Status Provisioner is a component for providing the overall service status in DP/App Deployer jobs.
+Deployment Status Provisioner is a component for providing the overall service status in Deployer jobs.
 
 ![status-provisioner](/documentation/images/status-provisioner.drawio.png)
 
 # Common information
 
-`Deployment Status Provisioner` is a component for providing the overall service status in DP/App Deployer jobs. It is
+`Deployment Status Provisioner` is a component for providing the overall service status in  Deployer jobs. It is
 used to receive statuses from all required service resources and specify the final result to a preselected resource from
-where the DP and App Deployers read the status.
+where the Deployers read the status.
 
 First of all, `Deployment Status Provisioner` checks readiness status of resources specified in `MONITORED_RESOURCES`
 parameter. If all resources are successfully started, the status condition displays the following message:
@@ -57,7 +57,7 @@ This parameter is mandatory and does not have default value.
 
 The `MONITORED_CUSTOM_RESOURCES` parameter specifies the comma-separated list of custom resources that should be monitored by `Deployment Status Provisioner`. Each resource description should consist of **six** or **seven** parts separated by space:
 
-* `group` is the group of custom resource. It is required. For example, `netcracker.com`.
+* `group` is the group of custom resource. It is required. For example, `qubership.org`.
 * `version` is the version of custom resource. It is required. For example, `v1`.
 * `plural` is the custom resource's plural name. It is required. For example, `opensearchservices`.
 * `name` is the custom resource's name. It is required. For example, `opensearch`.
@@ -84,7 +84,7 @@ The `MONITORED_CUSTOM_RESOURCES` parameter specifies the comma-separated list of
   In that case required expression looks like `$.status.conditions[?(@.reason=='ReconcileCycleStatus')].type`. If you need to get status from a specific field (for example, `component.status`) in the following custom resource:
 
   ```
-  apiVersion: netcracker.com/v1
+  apiVersion: qubership.org/v1
   kind: ComponentService
   metadata:
     creationTimestamp: '2024-02-27T10:02:51Z'
@@ -115,7 +115,7 @@ The `MONITORED_CUSTOM_RESOURCES` parameter specifies the comma-separated list of
 A complete example for this parameter would be as follows: 
 
 ```
-netcracker.com v1 opensearchservices opensearch $.status.conditions[?(@.reason=='ReconcileCycleStatus')].type Successful Failed, netcracker.com v1 customservices name $.spec.status.type Ready
+qubership.org v1 opensearchservices opensearch $.status.conditions[?(@.reason=='ReconcileCycleStatus')].type Successful Failed, qubership.org v1 customservices name $.spec.status.type Ready
 ```
 
 The `RESOURCE_TO_SET_STATUS` parameter specifies the characteristics of the resource to set the final status of the cluster.
@@ -186,7 +186,7 @@ spec:
       serviceAccountName: my-status-provisioner
       containers:
         - name: status-provisioner
-          image: artifactorycn.netcracker.com:17008/product/prod.platform.streaming_deployment-status-provisioner:master_latest
+          image: ghcr.io/netcracker/deployment-status-provisioner:main
           imagePullPolicy: "Always"
           env:
             - name: NAMESPACE
@@ -268,4 +268,4 @@ status:
       type: Successful
 ```
 
-A complete example can be found in [Consul Service Templates](https://git.netcracker.com/PROD.Platform.Streaming/consul-service/-/tree/master/charts/helm/consul-service/templates/status-provisioner).
+A complete example can be found in [Consul Service Templates](https://github.com/Netcracker/consul-service/tree/main/charts/helm/consul-service/templates/status-provisioner).

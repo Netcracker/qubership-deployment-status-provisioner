@@ -1,4 +1,6 @@
-This guide provides information about the usage of the Deployment Status Provisioner.
+# Qubership Deployment Status Provisioner
+
+This guide provides information about the usage of the Qubership Deployment Status Provisioner.
 
 Topics covered in this section:
 
@@ -12,7 +14,7 @@ Deployment Status Provisioner is a component for providing the overall service s
 
 # Common information
 
-`Deployment Status Provisioner` is a component for providing the overall service status in  Deployer jobs. It is
+`Deployment Status Provisioner` is a component for providing the overall service status of deployment procedure for operator-less services. It is
 used to receive statuses from all required service resources and specify the final result to a preselected resource from
 where the Deployers read the status.
 

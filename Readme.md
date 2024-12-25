@@ -4,7 +4,13 @@ This guide provides information about the usage of the Qubership Deployment Stat
 
 Topics covered in this section:
 
-[[_TOC_]]
+<!-- TOC -->
+* [Qubership Deployment Status Provisioner](#qubership-deployment-status-provisioner)
+* [Overview](#overview)
+* [Common information](#common-information)
+* [Usage](#usage)
+* [Example](#example)
+<!-- TOC -->
 
 # Overview
 

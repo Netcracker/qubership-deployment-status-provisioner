@@ -1,4 +1,4 @@
-FROM python:3.10.14-alpine3.20
+FROM python:3.10.18-alpine3.22
 
 ENV STATUS_PROVISIONER_HOME=/opt/provisioner \
     PYTHONUNBUFFERED=1

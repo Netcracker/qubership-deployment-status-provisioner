@@ -32,7 +32,7 @@ RUN set -x \
 RUN set -x \
     && python3 -m ensurepip \
     && rm -r /usr/lib/python*/ensurepip \
-    && pip3 install --upgrade pip setuptools==70.0.0 \
+    && pip3 install --upgrade pip setuptools==80.9.0 \
     && pip3 install -r ${STATUS_PROVISIONER_HOME}/requirements.txt \
     && rm -rf /var/cache/apk/*
 

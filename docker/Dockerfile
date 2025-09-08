@@ -1,4 +1,4 @@
-FROM python:3.10.14-alpine3.20
+FROM python:3.13.7-alpine3.22
 
 ENV STATUS_PROVISIONER_HOME=/opt/provisioner \
     PYTHONUNBUFFERED=1
@@ -11,7 +11,7 @@ COPY docker/*.py ${STATUS_PROVISIONER_HOME}/
 RUN set -x && apk add --upgrade --no-cache bash python3 apk-tools wget sed
 
 # Install kubectl - it is required for vault-service-status-provisioner-cleanup job
-ARG KUBECTL_VERSION="v1.32.1"
+ARG KUBECTL_VERSION="v1.33.2"
 RUN set -x \
     && wget \
         --no-check-certificate \

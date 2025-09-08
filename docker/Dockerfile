@@ -1,4 +1,4 @@
-# hadolint global ignore=DL3008
+# hadolint global ignore=DL3013,DL3018
 FROM python:3.13.7-alpine3.22
 
 ENV STATUS_PROVISIONER_HOME=/opt/provisioner \

@@ -2,7 +2,7 @@ name: Scout repository scan
 on:
   workflow_dispatch: {}
   schedule:
-  # Runs every Monday at 00:00 UTC
+    # Runs every Monday at 00:00 UTC
     - cron: '0 0 * * 1'
 permissions:
   contents: read
@@ -17,22 +17,24 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v5
-  
+
       - name: Analyze for critical and high CVEs
         id: docker-scout-cves
         if: ${{ github.event_name != 'pull_request_target' }}
         uses: docker/scout-action@v1
         continue-on-error: true
         with:
-          command: cves
+          command: cves,recommendations,compare
           image: fs://../${{ github.event.repository.name }}
           sarif-file: sarif.output.json
           summary: true
-          ignore-base: true
+          ignore-base: false
+          only-fixed: true
+          to-latest: true
           dockerhub-user: ${{ secrets.DOCKERHUB_USER }}
           dockerhub-password: ${{ secrets.DOCKERHUB_RW_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-  
+
       - name: Upload SARIF result
         uses: github/codeql-action/upload-sarif@v3
         with:

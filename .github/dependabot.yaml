@@ -8,6 +8,10 @@ updates:
     prefix: chore
     prefix-development: chore
     include: scope
+  groups:
+    actions-deps:
+      patterns:
+        - "*"
 # Go mod bot configurations
 - package-ecosystem: "pip"
   directory: "/docker"

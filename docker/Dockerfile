@@ -1,17 +1,15 @@
+# hadolint global ignore=DL3008
 FROM python:3.13.7-alpine3.22
 
 ENV STATUS_PROVISIONER_HOME=/opt/provisioner \
     PYTHONUNBUFFERED=1
 
-
 COPY docker/requirements.txt ${STATUS_PROVISIONER_HOME}/requirements.txt
 COPY docker/docker-entrypoint.sh /
 COPY docker/*.py ${STATUS_PROVISIONER_HOME}/
 
-RUN set -x && apk add --upgrade --no-cache bash python3 apk-tools wget sed
-
 # Install kubectl - it is required for vault-service-status-provisioner-cleanup job
-ARG KUBECTL_VERSION="v1.33.2"
+ARG KUBECTL_VERSION="v1.33.4"
 RUN set -x \
     && wget \
         --no-check-certificate \
@@ -20,29 +18,27 @@ RUN set -x \
         "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl" \
     && chmod +x "/usr/local/bin/kubectl"
 
-# Upgrade all tools to avoid vulnerabilities
-RUN set -x && apk upgrade --no-cache --available
-
-#Add unprivileged user
 RUN set -x \
-    && addgroup -S -g 1000 provisioner \
-    && adduser -s /bin/bash -S -G provisioner -u 1000 provisioner \
-    && addgroup provisioner root
-
-RUN set -x \
-    && python3 -m ensurepip \
-    && rm -r /usr/lib/python*/ensurepip \
-    && pip3 install --upgrade pip setuptools==70.0.0 \
-    && pip3 install -r ${STATUS_PROVISIONER_HOME}/requirements.txt \
+    # Install bash, python3, apk-tools, wget, sed
+    && apk add --upgrade --no-cache \
+        bash \
+    # Upgrade all tools to avoid vulnerabilities
+    && apk upgrade --no-cache --available \
+    # Install python dependencies
+    && pip3 install --no-cache-dir --upgrade \
+        pip \
+        setuptools \
+    && pip3 install --no-cache-dir -r ${STATUS_PROVISIONER_HOME}/requirements.txt \
     && rm -rf /var/cache/apk/*
 
 RUN set -x \
-    && for path in \
-         /docker-entrypoint.sh \
-    ; do \
-        chmod +x "$path"; \
-        chgrp 0 "$path"; \
-    done
+    # Add unprivileged user
+    && addgroup -S -g 1000 provisioner \
+    && adduser -s /bin/bash -S -G provisioner -u 1000 provisioner \
+    && addgroup provisioner root \
+    # Set permissions
+    && chmod +x /docker-entrypoint.sh \
+    && chgrp 0 /docker-entrypoint.sh
 
 WORKDIR ${STATUS_PROVISIONER_HOME}
 

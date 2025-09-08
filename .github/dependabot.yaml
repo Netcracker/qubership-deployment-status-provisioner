@@ -11,9 +11,6 @@ updates:
   groups:
     actions-deps:
       patterns:
-        - "*"  groups:
-    actions-deps:
-      patterns:
         - "*"
 # Go mod bot configurations
 - package-ecosystem: "pip"

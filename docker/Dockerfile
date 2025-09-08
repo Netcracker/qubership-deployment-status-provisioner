@@ -1,21 +1,30 @@
 # hadolint global ignore=DL3013,DL3018
-FROM python:3.13.7-alpine3.22
+FROM --platform=$BUILDPLATFORM python:3.13.7-alpine3.22
+
+# For multi-platform build
+ARG BUILDPLATFORM
+ARG TARGETOS
+ARG TARGETARCH
+
+# kubectl version
+ARG KUBECTL_VERSION="v1.34.0"
 
 ENV STATUS_PROVISIONER_HOME=/opt/provisioner \
-    PYTHONUNBUFFERED=1
+    PYTHONUNBUFFERED=1 \
+    USER_UID=1000 \
+    USER_GID=1000
 
 COPY docker/requirements.txt ${STATUS_PROVISIONER_HOME}/requirements.txt
 COPY docker/docker-entrypoint.sh /
 COPY docker/*.py ${STATUS_PROVISIONER_HOME}/
 
 # Install kubectl - it is required for vault-service-status-provisioner-cleanup job
-ARG KUBECTL_VERSION="v1.33.4"
 RUN set -x \
     && wget \
         --no-check-certificate \
         -nv \
         -O "/usr/local/bin/kubectl" \
-        "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl" \
+        "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/${TARGETOS}/${TARGETARCH}/kubectl" \
     && chmod +x "/usr/local/bin/kubectl"
 
 RUN set -x \
@@ -33,8 +42,8 @@ RUN set -x \
 
 RUN set -x \
     # Add unprivileged user
-    && addgroup -S -g 1000 provisioner \
-    && adduser -s /bin/bash -S -G provisioner -u 1000 provisioner \
+    && addgroup -S -g ${USER_GID} provisioner \
+    && adduser -s /bin/bash -S -G provisioner -u ${USER_UID} provisioner \
     && addgroup provisioner root \
     # Set permissions
     && chmod +x /docker-entrypoint.sh \
@@ -42,5 +51,6 @@ RUN set -x \
 
 WORKDIR ${STATUS_PROVISIONER_HOME}
 
-USER 1000:0
+USER ${USER_UID}:0
+
 ENTRYPOINT ["/docker-entrypoint.sh"]

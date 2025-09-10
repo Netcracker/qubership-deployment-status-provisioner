@@ -12,12 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 import os
 import time
 
 from jsonpath_ng.ext import parse
-
-from libraries import KubernetesLibrary, Condition, ConditionReason, ConditionType, CustomResource, DEFAULT_TIMEOUT
+from libraries import (
+    DEFAULT_TIMEOUT,
+    Condition,
+    ConditionReason,
+    ConditionType,
+    CustomResource,
+    KubernetesLibrary,
+)
 
 
 def get_resources_statuses(resources: str, kubernetes_library: KubernetesLibrary) -> []:
@@ -29,8 +36,7 @@ def get_resources_statuses(resources: str, kubernetes_library: KubernetesLibrary
         print(f'Processing [{resource}] resource')
         parts = resource.split()
         if len(parts) != 2:
-            raise Exception(f'Resource description must contain 2 parts: type and name. '
-                            f'But [{resource}] is received.')
+            raise Exception(f'Resource description must contain 2 parts: type and name. But [{resource}] is received.')
         resource_type = parts[0].lower()
         resource_name = parts[1]
         start_time = time.time()
@@ -104,12 +110,15 @@ if __name__ == '__main__':
     namespace = os.getenv('NAMESPACE')
     resource_to_set_status = os.getenv('RESOURCE_TO_SET_STATUS')
     treat_status_as_field = os.getenv('TREAT_STATUS_AS_FIELD', False)
+
     if (monitored_resources or monitored_custom_resources) and namespace and resource_to_set_status:
         condition_reason = os.getenv('CONDITION_REASON', ConditionReason.DEFAULT)
         successful_condition_type = os.getenv('SUCCESSFUL_CONDITION_TYPE', ConditionType.SUCCESSFUL)
         failed_condition_type = os.getenv('FAILED_CONDITION_TYPE', ConditionType.FAILED)
+
         kubernetes_library = KubernetesLibrary(namespace, resource_to_set_status)
         condition_library = Condition(condition_reason, successful_condition_type)
+
         successful_status_message = 'All components are in ready status.'
 
         # Update status condition with 'In Progress' state

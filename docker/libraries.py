@@ -12,11 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
 from datetime import datetime
 
 import kubernetes
 import urllib3
+from kubernetes import config
 from kubernetes.client import V1ComponentCondition, V1ComponentStatus
+from kubernetes.client.configuration import Configuration
 
 DEFAULT_TIMEOUT = '300'
 
@@ -56,9 +59,18 @@ class CustomResource(object):
 
 def get_kubernetes_api_client(config_file=None, context=None, persist_config=True):
     try:
-        kubernetes.config.load_incluster_config()
-        return kubernetes.client.ApiClient()
-    except kubernetes.config.ConfigException:
+        client_configuration = None
+        if sys.version_info >= (3, 13):
+            # https://docs.python.org/3/whatsnew/3.13.html#ssl
+            # Kubernetes client issue
+            # https://github.com/kubernetes-client/python/issues/2394#issuecomment-2884974440
+            client_configuration = Configuration()
+            client_configuration.verify_ssl = False
+
+        config.load_incluster_config(client_configuration)
+
+        return kubernetes.client.ApiClient(configuration=client_configuration)
+    except config.ConfigException:
         return kubernetes.config.new_client_from_config(config_file=config_file,
                                                         context=context,
                                                         persist_config=persist_config)

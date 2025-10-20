@@ -213,15 +213,6 @@ spec:
               memory: "50Mi"
               cpu: "50m"
 ```
-**NOTE:** You cannot use artifactory Docker images in your Helm templates due to external environments, it is necessary to use `DeploymentDescriptor` values and to add deployment status provisioner to dependencies. For example:
-
-```yaml
-  - type: find-latest-deployment-descriptor
-    repo: PROD.Platform.Streaming/deployment-status-provisioner
-    location: 0.0.16
-    docker-image-id: timestamp
-    deploy-param: deploymentStatusProvisioner
-```
 
 You should also create `Service Account`, `Role Binding` and `Role` with permissions that allow `Deployment Status Provisioner`
 to work with your monitored resources.

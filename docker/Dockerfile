@@ -1,5 +1,5 @@
 # hadolint global ignore=DL3013,DL3018
-FROM --platform=$BUILDPLATFORM python:3.14.0-alpine3.22
+FROM --platform=$BUILDPLATFORM python:3.15.0a2-alpine3.22
 
 # For multi-platform build
 ARG BUILDPLATFORM
@@ -7,7 +7,7 @@ ARG TARGETOS
 ARG TARGETARCH
 
 # kubectl version
-ARG KUBECTL_VERSION="v1.34.0"
+ARG KUBECTL_VERSION="v1.34.1"
 
 ENV STATUS_PROVISIONER_HOME=/opt/provisioner \
     PYTHONUNBUFFERED=1 \

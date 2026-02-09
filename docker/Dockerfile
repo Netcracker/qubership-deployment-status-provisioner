@@ -1,5 +1,5 @@
 # hadolint global ignore=DL3013,DL3018
-FROM --platform=$BUILDPLATFORM python:3.15.0a5-alpine3.23
+FROM --platform=$BUILDPLATFORM python:3.14.3-alpine3.23
 
 # For multi-platform build
 ARG BUILDPLATFORM

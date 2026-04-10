@@ -40,6 +40,12 @@ RUN set -x \
     && pip3 install --no-cache-dir -r ${STATUS_PROVISIONER_HOME}/requirements.txt \
     && rm -rf /var/cache/apk/*
 
+    # Upgrade tools from edge to avoid vulnerabilities
+RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/main" > /etc/apk/repositories  \
+&& echo "https://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
+&& apk add --update --no-cache --upgrade \
+    libssl3 libcrypto3 libuuid
+
 RUN set -x \
     # Add unprivileged user
     && addgroup -S -g ${USER_GID} provisioner \

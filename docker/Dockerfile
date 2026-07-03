@@ -40,6 +40,8 @@ RUN set -x \
     && pip3 install --no-cache-dir -r ${STATUS_PROVISIONER_HOME}/requirements.txt \
     && rm -rf /var/cache/apk/*
 
+RUN apk add --update --no-cache --upgrade \
+    libssl3 libcrypto3 libuuid
 
 RUN set -x \
     # Add unprivileged user
@@ -49,6 +51,8 @@ RUN set -x \
     # Set permissions
     && chmod +x /docker-entrypoint.sh \
     && chgrp 0 /docker-entrypoint.sh
+
+
 
 WORKDIR ${STATUS_PROVISIONER_HOME}
 

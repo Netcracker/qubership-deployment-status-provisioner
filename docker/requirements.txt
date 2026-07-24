@@ -3,4 +3,4 @@ PyYAML==6.0.3
 certifi==2026.6.17
 kubernetes==36.0.2
 jsonpath-ng==1.8.0
-pyasn1==0.6.3
+pyasn1==0.6.4

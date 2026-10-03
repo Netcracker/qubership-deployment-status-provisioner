@@ -1,7 +1,7 @@
 cachetools==7.2.0
 PyYAML==6.0.3
 certifi==2026.6.17
-kubernetes==36.0.2
+kubernetes==36.0.3
 jsonpath-ng==1.8.0
 pyasn1==0.6.4
 urllib3~=2.8.0

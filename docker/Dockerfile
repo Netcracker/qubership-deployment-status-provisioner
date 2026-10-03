@@ -7,7 +7,7 @@ ARG TARGETOS
 ARG TARGETARCH
 
 # kubectl version
-ARG KUBECTL_VERSION="v1.36.2"
+ARG KUBECTL_VERSION="v1.36.5"
 
 ENV STATUS_PROVISIONER_HOME=/opt/provisioner \
     PYTHONUNBUFFERED=1 \
@@ -41,7 +41,7 @@ RUN set -x \
     && rm -rf /var/cache/apk/*
 
 RUN apk add --update --no-cache --upgrade \
-    libssl3 libcrypto3 libuuid
+    libssl3 libcrypto3 libuuid sqlite-libs
 
 RUN set -x \
     # Add unprivileged user

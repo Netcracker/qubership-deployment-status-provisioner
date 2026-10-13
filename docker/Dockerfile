@@ -35,8 +35,8 @@ RUN set -x \
     && apk upgrade --no-cache --available \
     # Install python dependencies
     && pip3 install --no-cache-dir --upgrade \
-        pip \
-        setuptools \
+        "pip>=26.0,<27.0" \
+        "setuptools>=80.10,<81.0" \
     && pip3 install --no-cache-dir -r ${STATUS_PROVISIONER_HOME}/requirements.txt \
     && rm -rf /var/cache/apk/*
 
